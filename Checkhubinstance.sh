@@ -11,7 +11,7 @@ do
 	sleep 1
 done
 
-# start the java command
+# start the java command using packages
 java -cp selenium-docker.jar:selenium-docker-tests.jar:libs/* \
     -DHUB_HOST=$HUB_HOST \
     -DBROWSER=$BROWSER \
