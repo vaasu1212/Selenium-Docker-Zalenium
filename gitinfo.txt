@@ -1,0 +1,19 @@
+git log
+git log --oneline --graph --decorate
+ignore
+Merge Conflict and resolution
+P4 Merge
+git mergetool --tool-help
+Download and configure
+git config --global merge.tool p4merge
+git config --global mergetool.p4merge.path "c:"
+git config --global mergetool.prompt false
+git config --global diff.tool p4merge
+git config --global difftool.p4merge.path "c:"
+git config --global difftool.prompt false
+git config --global --list
+
+Resolve Merge conflict
+
+git log --oneline --graph --decorate
+git rebase master
