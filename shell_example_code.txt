@@ -1,0 +1,52 @@
+from selenium import webdriver
+from selenium.common.exceptions import NoSuchElementException
+from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.chrome.options import Options
+import time
+
+driver = webdriver.Chrome(".\\chromedriver.exe")
+driver.maximize_window()
+driver.get("https://www.shell.com/media/news-and-media-releases.html")
+
+# div = driver.find_elements_by_xpath("//*[@id='main']/div/div/div[5]/section/div/div/div[2]")
+grandparent_shell = driver.find_element_by_xpath("/html/body/div[1]/main/div/div/div[5]/section/div/div/div[2]")
+parents_shell = grandparent_shell.find_elements_by_xpath("*")
+print(len(divs))
+trash = "The companies in which Royal Dutch Shell plc directly and indirectly owns investments are separate legal entities."
+
+shell_links = []
+for ps in parents_shell:
+    maindiv_parents_shell = ps.find_elements_by_tag_name("div")[1]. \
+        find_elements_by_tag_name("div")[0]. \
+        find_elements_by_tag_name("div")[0]. \
+        find_elements_by_tag_name("div")[0]. \
+        find_elements_by_tag_name("div")[0]
+
+    children_shell = maindiv_parents_shell.find_elements_by_xpath("*")
+    for cs in children_shell:
+        # print(p.get_attribute("innerHTML"))
+        article_shell = cs.find_element_by_tag_name("div")
+        article_shell = article_shell.find_element_by_tag_name("div")
+        link_shell = article_shell.find_element_by_tag_name("h3")
+        reallink_shell = link_shell.find_element_by_tag_name("a")
+        href_reallink_shell = reallink_shell.get_attribute("href")
+        shell_links.append(c)
+
+for shell_link in shell_links:
+    driver.get(shell_link)
+    div_header = driver.find_element_by_class_name("page-header__text")
+    div_sl = driver.find_element_by_class_name("text-image__text")
+    shell_text = div_sl.text
+    if trash in shell_text:
+        shell_text = shell_text.split(trash)[0]
+        shell_text.rstrip()
+
+    with open(".\\shell_articles.txt", mode='a', encoding="utf-16") as file:
+        file.write(shell_text)
+        file.write(div_header.text)
+        file.write("\r\n\r\n")
+
+    # time.sleep(0.5)
+    # i = i - 1
+    # if i <= 0:
+    #     exit()

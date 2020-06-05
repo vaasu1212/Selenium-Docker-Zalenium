@@ -1,0 +1,79 @@
+import pandas as pd
+monos_to_be_filtered = ["nps", "experience", "touchpoint", "redesign", "digitization", "engagement", "loyalty"
+                        , "retention", "interaction", "personalization", "analytics", "mobile", "rpa"]
+bis_to_be_filtered = ["customer experience", "customer value", "customer focused", "customer driven", "product offering"
+                      , "behavior change", "customer service", "lifetime value", "customer growth", "customer journeys"
+                      , "customer success", "omni channel", "customer analytics", "self service"]
+# tris_to_be_filtered = ["customer journey analytics", "customer engagement platform", "master data management"]
+
+with open(".\\list.txt", mode='r', encoding="utf-8") as file:
+    lines = file.readlines()
+
+for i in range(0, len(lines)):
+    lines[i] = lines[i].rstrip()
+
+dict_mono = {}
+dict_bi = {}
+# dict_tri = {}
+for line in lines:
+    temp = line.lower()
+    if temp not in dict_mono:
+        dict_mono[temp] = 1
+    else:
+        dict_mono[temp] = dict_mono[temp] + 1
+
+for i in range (0, len(lines)):
+    try:
+        temp = lines[i].lower() + " " + lines[i+1].lower()
+    except IndexError:
+        pass
+
+    if temp not in dict_bi:
+        dict_bi[temp] = 1
+    else:
+        dict_bi[temp] = dict_bi[temp] + 1
+
+# for i in range (0, len(lines)):
+#     try:
+#         temp = lines[i].lower() + " " + lines[i+1].lower() + " " + lines[i+2].lower()
+#     except IndexError:
+#         pass
+#     if temp not in dict_tri:
+#         dict_tri[temp] = 1
+#     else:
+#         dict_tri[temp] = dict_tri[temp] + 1
+
+dict_mono_filtered = {}
+dict_bi_filtered = {}
+# dict_tri_filtered = {}
+
+for word in monos_to_be_filtered:
+    if word in dict_mono:
+        dict_mono_filtered[word] = dict_mono[word]
+        # print("%s: %d" % (word, dict_mono[word]))
+        # print(word + ": " + str(dict_mono[word]))
+    else:
+        dict_mono_filtered[word] = 0
+        # print("%s: 0" % word)
+
+for word in bis_to_be_filtered:
+    if word in dict_bi:
+        dict_bi_filtered[word] = dict_bi[word]
+    else:
+        dict_bi_filtered[word] = 0
+
+# for word in tris_to_be_filtered:
+#     if word in dict_tri:
+#         dict_tri_filtered[word] = dict_bi[word]
+#     else:
+#         dict_tri_filtered[word] = 0
+
+master_dictionary = {}
+master_dictionary.update(dict_mono_filtered)
+master_dictionary.update(dict_bi_filtered)
+# master_dictionary.update(dict_tri_filtered)
+
+df = pd.Series(master_dictionary)
+
+df.name = "swc"
+df.to_csv("shell_words_counted.csv")
